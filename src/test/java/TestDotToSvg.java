@@ -1,3 +1,9 @@
+import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacv.Java2DFrameConverter;
+import org.bytedeco.javacv.OpenCVFrameConverter;
+import org.bytedeco.opencv.opencv_core.CvScalar;
+import org.bytedeco.opencv.opencv_core.Mat;
+import org.bytedeco.opencv.opencv_java;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -5,18 +11,21 @@ import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+
+import static org.bytedeco.opencv.global.opencv_core.*;
+import static org.bytedeco.opencv.global.opencv_highgui.imshow;
+import static org.bytedeco.opencv.global.opencv_highgui.waitKey;
+import static org.bytedeco.opencv.global.opencv_imgproc.*;
 
 public class TestDotToSvg {
   private static final Logger log = LoggerFactory.getLogger(TestDotToSvg.class);
 
   @Test
-  public void testSimpleDotToSvg() throws IOException {
+  public void testSimpleDotToSvg() throws IOException, InterruptedException {
     String dot = "digraph { a -> b; b -> c }";
 
     String svg = Graphviz.dotToSvg(dot);
@@ -27,28 +36,34 @@ public class TestDotToSvg {
     Assertions.assertEquals(expected.getHeight(), actual.getHeight(), "Image heights differ");
     Assertions.assertEquals(expected.getWidth(), actual.getWidth(), "Image widths differ");
 
-    // Image differences indicate a slight vertical shift
-    int mismatches = 0;
-    for (int x = 0; x < expected.getWidth(); x++) {
-      for (int y = 2; y < expected.getHeight() - 2; y++) {
-        if (expected.getRGB(x, y) != actual.getRGB(x, y)) {
-          log.warn("Image values differ at point ({}, {}) : expected = {}, actual = {}", x, y,
-              String.format("%x", expected.getRGB(x, y)),
-              String.format("%x", actual.getRGB(x, y)));
-          mismatches++;
-          if (expected.getRGB(x, y+2) == actual.getRGB(x, y)) {
-            log.info("Image values MATCH at point ({}, {}) : expected = {}, actual = {}", x, y,
-                String.format("%x", expected.getRGB(x, y+2)),
-                String.format("%x", actual.getRGB(x, y)));
-            mismatches--;
-          }
-        }
-      }
-    }
+    Loader.load(opencv_java.class);
 
-    boolean e = ImageIO.write(expected, "bmp", new File("/tmp/expected.bmp"));
-    boolean a = ImageIO.write(actual, "bmp", new File("/tmp/actual.bmp"));
+    OpenCVFrameConverter.ToMat openCVFrameConverter = new OpenCVFrameConverter.ToMat();
+    Java2DFrameConverter java2DFrameConverter = new Java2DFrameConverter();
+    Mat matExpected = openCVFrameConverter.convert(java2DFrameConverter.convert(expected));
+    imshow("expected", matExpected);
 
-    //Assertions.assertEquals(0, mismatches, "Found %d mismatches".formatted(mismatches));
+    Mat grayExpected = new Mat(matExpected.size(), CV_8UC1);
+    cvtColor(matExpected, grayExpected, CV_BGR2GRAY);
+    threshold(grayExpected, grayExpected, 200, 255, CV_THRESH_BINARY);
+    imshow("expected thresholded", grayExpected);
+
+    Mat matActual = openCVFrameConverter.convert(java2DFrameConverter.convert(actual));
+    imshow("actual", matActual);
+
+    Mat grayActual = new Mat(matActual.size(), CV_8UC1);
+    cvtColor(matActual, grayActual, CV_BGR2GRAY);
+    threshold(grayActual, grayActual, 200, 255, CV_THRESH_BINARY);
+    imshow("actual thresholded", grayActual);
+
+    Mat result = new Mat(matActual.size(), CV_32FC1);
+    matchTemplate(grayActual, grayExpected, result, TM_SQDIFF_NORMED);
+    OpenCVFrameConverter.ToIplImage toIplImage = new OpenCVFrameConverter.ToIplImage();
+    CvScalar sum = cvSum(toIplImage.convert(openCVFrameConverter.convert(result)));
+    log.info("Sum of cross correlation = {}", sum);
+
+    waitKey(0);
+
+    Assertions.assertTrue(sum.val(0) <= 0.05);
   }
 }

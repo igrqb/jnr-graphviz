@@ -19,6 +19,10 @@ dependencies {
     testImplementation 'commons-io:commons-io:2.14.0'
     testImplementation 'com.twelvemonkeys.imageio:imageio-batik:3.9.4'
     testImplementation 'org.apache.xmlgraphics:batik-transcoder:1.17'
+    testImplementation 'org.bytedeco:javacv:1.5.9'
+    testImplementation 'org.bytedeco:javacv-platform:1.5.9'
+    testImplementation 'org.bytedeco:opencv:4.7.0-1.5.9'
+    testImplementation 'org.bytedeco:opencv-platform-gpu:4.7.0-1.5.9'
 }
 
 test {
