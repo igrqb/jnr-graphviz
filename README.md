@@ -1,2 +1,2 @@
 # jnr-graphviz
-Java bindings for simple GraphViz commands using JNR
+Java bindings for simple Graphviz commands using JNR
