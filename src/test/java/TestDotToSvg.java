@@ -25,7 +25,7 @@ public class TestDotToSvg {
   private static final Logger log = LoggerFactory.getLogger(TestDotToSvg.class);
 
   @Test
-  public void testSimpleDotToSvg() throws IOException, InterruptedException {
+  public void testSimpleDotToSvg() throws IOException {
     String dot = "digraph { a -> b; b -> c }";
 
     String svg = Graphviz.dotToSvg(dot);
