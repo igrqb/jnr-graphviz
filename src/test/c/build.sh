@@ -1,0 +1,1 @@
+gcc example.c -lgvc -lcgraph -o example
