@@ -1,8 +1,11 @@
 plugins {
     id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
 }
 
-group = 'com.github.igrqb'
+group = 'io.github.igrqb'
 version = '0.1'
 
 repositories {
