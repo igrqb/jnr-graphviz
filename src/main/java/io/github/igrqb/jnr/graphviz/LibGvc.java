@@ -1,16 +1,18 @@
+package io.github.igrqb.jnr.graphviz;
+
 import jnr.ffi.Pointer;
 
 /**
- * JNR interface to libgvc - Graphviz context library. Exposes a subset of function required for conversion from dot to
+ * JNR interface to libgvc - io.github.igrqb.jnr.graphviz.Graphviz context library. Exposes a subset of function required for conversion from dot to
  * svg.
- * For more information please refer to the Graphviz documentation:
- * <a href="https://graphviz.org/docs/library/">Using Graphviz as a library</a>
+ * For more information please refer to the io.github.igrqb.jnr.graphviz.Graphviz documentation:
+ * <a href="https://graphviz.org/docs/library/">Using io.github.igrqb.jnr.graphviz.Graphviz as a library</a>
  */
 public interface LibGvc {
 
   /**
    * Set up a graphviz context (libgvc).
-   * See <a href="https://graphviz.org/pdf/gvc.3.pdf">libgvc − Graphviz context library</a>
+   * See <a href="https://graphviz.org/pdf/gvc.3.pdf">libgvc − io.github.igrqb.jnr.graphviz.Graphviz context library</a>
    * @return pointer to graphviz context (type GVC_t)
    */
   Pointer gvContext();
@@ -25,7 +27,7 @@ public interface LibGvc {
 
   /**
    * Compute a layout using a specified engine
-   * See <a href="https://graphviz.org/pdf/gvc.3.pdf">libgvc − Graphviz context library</a>
+   * See <a href="https://graphviz.org/pdf/gvc.3.pdf">libgvc − io.github.igrqb.jnr.graphviz.Graphviz context library</a>
    * @param gvc *GVC_t
    * @param g *graph_t
    * @param engine name of engine to use, e.g. "dot". More engines here: <a href="https://graphviz.org/docs/layouts/">Layout Engines</a>
@@ -35,7 +37,7 @@ public interface LibGvc {
 
   /**
    * Render layout in a specified format to an open FILE.
-   * See <a href="https://graphviz.org/pdf/gvc.3.pdf">libgvc − Graphviz context library</a>
+   * See <a href="https://graphviz.org/pdf/gvc.3.pdf">libgvc − io.github.igrqb.jnr.graphviz.Graphviz context library</a>
    * @param gvc *GVC_t
    * @param g *graph_t
    * @param format output format, e.g. "svg"
@@ -46,7 +48,7 @@ public interface LibGvc {
 
   /**
    * Clean up layout data structures - layouts are not nestable (yet)
-   * See <a href="https://graphviz.org/pdf/gvc.3.pdf">libgvc − Graphviz context library</a>
+   * See <a href="https://graphviz.org/pdf/gvc.3.pdf">libgvc − io.github.igrqb.jnr.graphviz.Graphviz context library</a>
    * @param gvc *GVC_t
    * @param g *graph_t
    * @return 0 on success, non-zero on error

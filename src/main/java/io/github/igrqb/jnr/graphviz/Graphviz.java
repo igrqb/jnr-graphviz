@@ -1,3 +1,5 @@
+package io.github.igrqb.jnr.graphviz;
+
 import jnr.ffi.LibraryLoader;
 import jnr.ffi.Memory;
 import jnr.ffi.Pointer;
@@ -6,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * User-friendly API to leverage Graphviz library functions to generate graph output from dot language.
+ * User-friendly API to leverage io.github.igrqb.jnr.graphviz.Graphviz library functions to generate graph output from dot language.
  */
 public class Graphviz {
   private static final Logger log = LoggerFactory.getLogger(Graphviz.class);

@@ -1,3 +1,5 @@
+package io.github.igrqb.jnr.graphviz;
+
 import jnr.ffi.Pointer;
 import jnr.ffi.Variable;
 import jnr.ffi.types.int64_t;

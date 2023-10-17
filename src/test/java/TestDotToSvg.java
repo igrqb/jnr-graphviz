@@ -1,3 +1,4 @@
+import io.github.igrqb.jnr.graphviz.Graphviz;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameConverter;
