@@ -1,7 +1,7 @@
 # jnr-graphviz
-### Java bindings for simple io.github.igrqb.jnr.graphviz.Graphviz commands using JNR
+### Java bindings for simple Graphviz commands using JNR
 
-Expects io.github.igrqb.jnr.graphviz.Graphviz to be installed on the target system, e.g.:
+Expects Graphviz to be installed on the target system, e.g.:
 
 * Ubuntu: `sudo apt install graphviz libgraphviz-dev`
 * Fedora: `sudo dnf in graphviz graphviz-devel`
