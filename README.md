@@ -1,6 +1,5 @@
 # jnr-graphviz
 ### Java bindings for simple Graphviz commands using JNR
-[![Gradle Package](https://github.com/igrqb/jnr-graphviz/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/igrqb/jnr-graphviz/actions/workflows/gradle-publish.yml)
 
 Expects Graphviz to be installed on the target system, e.g.:
 
