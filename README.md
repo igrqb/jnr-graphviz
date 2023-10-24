@@ -16,14 +16,14 @@ Expects Graphviz to be installed on the target system, e.g.:
 <dependency>
   <groupId>io.github.igrqb</groupId>
   <artifactId>jnr-graphviz</artifactId>
-  <version>0.3</version>
+  <version>0.4</version>
 </dependency>
 ```
 
 #### Gradle
 
 ```groovy
-implementation 'io.github.igrqb:jnr-graphviz:0.3'
+implementation 'io.github.igrqb:jnr-graphviz:0.4'
 ```
 
 For more dependency systems: https://mvnrepository.com/artifact/io.github.igrqb/jnr-graphviz/
@@ -36,4 +36,7 @@ import io.github.igrqb.jnr.graphviz.Graphviz;
 
 String dot = "digraph { a -> b; b -> c }";
 String svg = Graphviz.dotToSvg(dot);
+
+// or directly to file
+File svgFile = Graphviz.dotToSvg(dot, "/path/to/file.svg");
 ```
