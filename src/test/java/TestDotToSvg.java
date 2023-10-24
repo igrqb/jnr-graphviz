@@ -1,4 +1,5 @@
 import io.github.igrqb.jnr.graphviz.Graphviz;
+import org.apache.commons.io.FileUtils;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameConverter;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -76,5 +78,18 @@ public class TestDotToSvg {
       waitKey(0);
 
     Assertions.assertTrue(sum.val(0) <= 0.05);
+  }
+
+  @Test
+  public void testDotToSvgFile() throws IOException {
+    String dot = "digraph { a -> b; b -> c }";
+
+    String svg = Graphviz.dotToSvg(dot);
+
+    File svgFile = Graphviz.dotToSvg(dot, "/tmp/graph.svg");
+
+    String fromFile = FileUtils.readFileToString(svgFile, StandardCharsets.UTF_8);
+
+    Assertions.assertEquals(svg, fromFile);
   }
 }

@@ -7,6 +7,8 @@ import jnr.ffi.Runtime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+
 /**
  * User-friendly API to leverage io.github.igrqb.jnr.graphviz.Graphviz library functions to generate graph output from dot language.
  */
@@ -90,5 +92,36 @@ public class Graphviz {
     log.trace("fclose status = {}", status);
     libc.free(buffer);
     return s;
+  }
+
+  /**
+   * Generate SVG file from dot language representation of graph.
+   * @param dot input dot spec of graph
+   * @param svgFilePath desired output SVG file path
+   * @return output SVG file
+   */
+  public static File dotToSvg(String dot, String svgFilePath) {
+    Pointer fp = libc.fopen(svgFilePath, "w");
+
+    Pointer gvc = libGvc.gvContext();
+    Pointer g = libGvc.agmemread(dot);
+    int status = libGvc.gvLayout(gvc, g, "dot");
+    log.trace("gvLayout status = {}", status);
+
+    status = libGvc.gvRender(gvc, g, "svg", fp);
+    log.trace("gvRender status = {}", status);
+    status = libc.fflush(fp);
+    log.trace("fflush status = {}", status);
+
+    status = libGvc.gvFreeLayout(gvc, g);
+    log.trace("gvFreeLayout status = {}", status);
+    status = libGvc.agclose(g);
+    log.trace("agclose status = {}", status);
+    status = libGvc.gvFreeContext(gvc);
+    log.trace("gvFreeContext status = {}", status);
+    status = libc.fclose(fp);
+    log.trace("fclose status = {}", status);
+
+    return new File(svgFilePath);
   }
 }
