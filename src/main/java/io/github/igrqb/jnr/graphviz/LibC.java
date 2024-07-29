@@ -14,7 +14,14 @@ public interface LibC {
   @int64_t Variable<Long> stdout();
   @int64_t Variable<Long> stdin();
 
-  Pointer open_memstream(Pointer stringPtr, Pointer sizePtr);
+  /**
+   * Open an in-memory stream
+   * @param dataPtr pointer where the data will reside
+   * @param sizePtr pointer where information on the size of the data will reside
+   * @return pointer to the memory stream
+   * @see <a href="https://www.man7.org/linux/man-pages/man3/open_memstream.3.html">open_memstream(3) - Linux manual page</a>
+   */
+  Pointer open_memstream(Pointer dataPtr, Pointer sizePtr);
 
   /**
    * Open a file for read/write.
@@ -25,7 +32,23 @@ public interface LibC {
    */
   Pointer fopen(String filename, String mode);
 
+  /**
+   * Close file stream
+   * @param stream pointer to file stream
+   * @return return code of operation
+   */
   int fclose(Pointer stream);
+
+  /**
+   * Flush a file stream
+   * @param stream pointer to file stream
+   * @return return code of operation
+   */
   int fflush(Pointer stream);
+
+  /**
+   * Free a pointer
+   * @param ptr pointer
+   */
   void free(Pointer ptr);
 }
