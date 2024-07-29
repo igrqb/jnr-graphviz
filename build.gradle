@@ -22,6 +22,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'commons-io:commons-io:2.16.1'
     testImplementation 'com.twelvemonkeys.imageio:imageio-batik:3.11.0'
+    testImplementation 'org.apache.pdfbox:pdfbox:3.0.2'
     testImplementation 'org.apache.xmlgraphics:batik-transcoder:1.17'
     testImplementation 'org.bytedeco:javacv-platform:1.5.10'
     testImplementation 'org.bytedeco:opencv-platform:4.9.0-1.5.10'

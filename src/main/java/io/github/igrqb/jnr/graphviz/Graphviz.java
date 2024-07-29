@@ -124,4 +124,45 @@ public class Graphviz {
 
     return new File(svgFilePath);
   }
+
+  /**
+   * Export graph in dot format to specified output format.<br/>
+   * See <a href="https://graphviz.org/docs/outputs/">Output Formats | Graphviz</a> for available formats.
+   *
+   * @param dot graph in dot format
+   * @param outputFormat target output format
+   * @return graph exported to target output format
+   */
+  public static byte[] export(String dot, OutputFormat outputFormat) {
+    Pointer bufferAddress = Memory.allocateDirect(Runtime.getRuntime(libc), Long.BYTES);
+    Pointer bufferSize = Memory.allocateDirect(Runtime.getRuntime(libc), Integer.BYTES);
+    Pointer memStreamPtr = libc.open_memstream(bufferAddress, bufferSize);
+
+    Pointer gvc = libGvc.gvContext();
+    Pointer g = libGvc.agmemread(dot);
+    int status = libGvc.gvLayout(gvc, g, "dot");
+    log.trace("gvLayout status = {}", status);
+
+    status = libGvc.gvRender(gvc, g, outputFormat.getCommandLineParameter(), memStreamPtr);
+    log.trace("gvRender status = {}", status);
+    status = libc.fflush(memStreamPtr);
+    log.trace("fflush status = {}", status);
+
+    int size = bufferSize.getInt(0);
+    Pointer buffer = Pointer.wrap(Runtime.getRuntime(libc), bufferAddress.getLong(0));
+    byte[] bytes = new byte[size];
+    buffer.get(0, bytes, 0, size);
+    log.trace("Output buffer length = {}", size);
+
+    status = libGvc.gvFreeLayout(gvc, g);
+    log.trace("gvFreeLayout status = {}", status);
+    status = libGvc.agclose(g);
+    log.trace("agclose status = {}", status);
+    status = libGvc.gvFreeContext(gvc);
+    log.trace("gvFreeContext status = {}", status);
+    status = libc.fclose(memStreamPtr);
+    log.trace("fclose status = {}", status);
+    libc.free(buffer);
+    return bytes;
+  }
 }
