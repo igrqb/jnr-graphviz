@@ -9,9 +9,22 @@ import jnr.ffi.types.int64_t;
  */
 public interface LibC {
 
-  @int64_t
-  Variable<Long> stderr();
+  /**
+   * JNR handle to stderr
+   * @return stderr
+   */
+  @int64_t Variable<Long> stderr();
+
+  /**
+   * JNR handle to stdout
+   * @return stdout
+   */
   @int64_t Variable<Long> stdout();
+
+  /**
+   * JNR handle to stdin
+   * @return stdin
+   */
   @int64_t Variable<Long> stdin();
 
   /**
