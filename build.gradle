@@ -16,16 +16,16 @@ repositories {
 dependencies {
     implementation 'com.github.jnr:jnr-ffi:2.2.17'
     implementation 'org.slf4j:slf4j-api:2.0.16'
-    implementation 'ch.qos.logback:logback-classic:1.5.11'
+    implementation 'ch.qos.logback:logback-classic:1.5.13'
 
-    testImplementation platform('org.junit:junit-bom:5.11.2')
+    testImplementation platform('org.junit:junit-bom:5.11.4')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'commons-io:commons-io:2.17.0'
+    testImplementation 'commons-io:commons-io:2.18.0'
     testImplementation 'com.twelvemonkeys.imageio:imageio-batik:3.12.0'
     testImplementation 'org.apache.pdfbox:pdfbox:3.0.3'
     testImplementation 'org.apache.xmlgraphics:batik-transcoder:1.18'
-    testImplementation 'org.bytedeco:javacv-platform:1.5.10'
-    testImplementation 'org.bytedeco:opencv-platform:4.9.0-1.5.10'
+    testImplementation 'org.bytedeco:javacv-platform:1.5.11'
+    testImplementation 'org.bytedeco:opencv-platform:4.10.0-1.5.11'
 }
 
 test {
