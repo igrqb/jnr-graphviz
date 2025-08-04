@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
     id 'signing'
     id("io.github.gradle-nexus.publish-plugin") version '2.0.0'
-    id "com.github.ben-manes.versions" version '0.51.0'
+    id "com.github.ben-manes.versions" version '0.52.0'
 }
 
 group = 'io.github.igrqb'
@@ -15,17 +15,18 @@ repositories {
 
 dependencies {
     implementation 'com.github.jnr:jnr-ffi:2.2.17'
-    implementation 'org.slf4j:slf4j-api:2.0.16'
-    implementation 'ch.qos.logback:logback-classic:1.5.13'
+    implementation 'org.slf4j:slf4j-api:2.0.17'
+    implementation 'ch.qos.logback:logback-classic:1.5.18'
 
-    testImplementation platform('org.junit:junit-bom:5.11.4')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'commons-io:commons-io:2.18.0'
+    testImplementation(platform('org.junit:junit-bom:5.13.4'))
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    testImplementation 'org.junit.platform:junit-platform-suite-engine:1.13.4'
+    testImplementation 'commons-io:commons-io:2.20.0'
     testImplementation 'com.twelvemonkeys.imageio:imageio-batik:3.12.0'
-    testImplementation 'org.apache.pdfbox:pdfbox:3.0.3'
-    testImplementation 'org.apache.xmlgraphics:batik-transcoder:1.18'
-    testImplementation 'org.bytedeco:javacv-platform:1.5.11'
-    testImplementation 'org.bytedeco:opencv-platform:4.10.0-1.5.11'
+    testImplementation 'org.apache.pdfbox:pdfbox:3.0.5'
+    testImplementation 'org.apache.xmlgraphics:batik-transcoder:1.19'
+    testImplementation 'org.bytedeco:javacv-platform:1.5.12'
+    testImplementation 'org.bytedeco:opencv-platform:4.11.0-1.5.12'
 }
 
 test {
