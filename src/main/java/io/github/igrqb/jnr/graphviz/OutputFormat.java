@@ -30,11 +30,11 @@ public enum OutputFormat {
    */
   DOT_XDOT("DOT", "xdot", "Graphviz Language"),
   /**
-   * , "Graphviz Language
+   * Graphviz Language
    */
   DOT_XDOT_1_2("DOT", "xdot1.2", "Graphviz Language"),
   /**
-   * , "Graphviz Language
+   * Graphviz Language
    */
   DOT_XDOT_1_4("DOT", "xdot1.4", "Graphviz Language"),
   /**
@@ -150,7 +150,7 @@ public enum OutputFormat {
    */
   PNG("PNG", "png", "Portable Network Graphics"),
   /**
-   * , "Persistence of Vision Raytracer (prototype)
+   * Persistence of Vision Raytracer (prototype)
    */
   POV("POV-Ray", "pov", "Persistence of Vision Raytracer (prototype)"),
   /**
@@ -158,9 +158,9 @@ public enum OutputFormat {
    */
   PS("PS", "ps", "Adobe PostScript"),
   /**
-   * ,  	"Adobe PostScript for Portable Document Format
+   * Adobe PostScript for Portable Document Format
    */
-  PS_PDF("PS/PDF", "ps2",  	"Adobe PostScript for Portable Document Format"),
+  PS_PDF("PS/PDF", "ps2", "Adobe PostScript for Portable Document Format"),
   /**
    * Photoshop
    */

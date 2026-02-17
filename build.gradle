@@ -114,11 +114,10 @@ jreleaser {
     deploy {
         maven {
             mavenCentral {
-                // Create a named deployer instance (usually "sonatype")
-                sonatype {   // ← this is now the name of the instance
-                    active = 'ALWAYS'   // or 'RELEASE' if snapshots are not used
+                sonatype {
+                    active = 'ALWAYS'
                     url = 'https://central.sonatype.com/api/v1/publisher'
-                    stagingRepository('build/staging-deploy')   // or 'target/staging-deploy'
+                    stagingRepository('build/staging-deploy')
                     // autoRelease = true
                     // closeDelay = 'PT5M'
                 }
@@ -127,11 +126,10 @@ jreleaser {
     }
 
     signing {
-        // Most common pattern in 2025+
         pgp {
             active          = 'ALWAYS'
-            publicKey       = '{{env.PGP_PUBLIC_KEY}}'     // armored public key block
-            secretKey       = '{{env.PGP_SECRET_KEY}}'     // armored private key block
+            publicKey       = '{{env.PGP_PUBLIC_KEY}}'
+            secretKey       = '{{env.PGP_SECRET_KEY}}'
             passphrase      = '{{env.PGP_PASSPHRASE}}'
         }
     }
