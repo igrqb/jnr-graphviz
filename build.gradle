@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'io.github.igrqb'
-version = '0.5'
+version = '0.5.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -16,17 +16,31 @@ repositories {
 dependencies {
     implementation 'com.github.jnr:jnr-ffi:2.2.18'
     implementation 'org.slf4j:slf4j-api:2.0.17'
-    implementation 'ch.qos.logback:logback-classic:1.5.20'
+    implementation 'ch.qos.logback:logback-classic:1.5.32'
 
-    testImplementation(platform('org.junit:junit-bom:6.0.1'))
-    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.1'
-    testImplementation 'org.junit.platform:junit-platform-suite-engine:6.0.1'
-    testImplementation 'commons-io:commons-io:2.20.0'
-    testImplementation 'com.twelvemonkeys.imageio:imageio-batik:3.12.0'
+    testImplementation(platform('org.junit:junit-bom:6.0.3'))
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.3'
+    testImplementation 'org.junit.platform:junit-platform-suite-engine:6.0.3'
+    testImplementation 'commons-io:commons-io:2.21.0'
+    testImplementation 'com.twelvemonkeys.imageio:imageio-batik:3.13.0'
     testImplementation 'org.apache.pdfbox:pdfbox:3.0.6'
     testImplementation 'org.apache.xmlgraphics:batik-transcoder:1.19'
     testImplementation 'org.bytedeco:javacv-platform:1.5.12'
     testImplementation 'org.bytedeco:opencv-platform:4.11.0-1.5.12'
+}
+
+def isNonStable = { String version ->
+    // added -JRE for guava
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA', '-JRE'].any { theVersion -> version.toUpperCase().contains(theVersion) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
+}
+
+tasks.named("dependencyUpdates").configure {
+    description 'Displays the dependency updates for the project via https://github.com/ben-manes/gradle-versions-plugin'
+    rejectVersionIf {
+      isNonStable(it.candidate.version)
+    }
 }
 
 test {
