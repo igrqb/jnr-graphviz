@@ -15,14 +15,14 @@ Expects Graphviz to be installed on the target system, e.g.:
 <dependency>
   <groupId>io.github.igrqb</groupId>
   <artifactId>jnr-graphviz</artifactId>
-  <version>0.5</version>
+  <version>0.5.1</version>
 </dependency>
 ```
 
 #### Gradle
 
 ```groovy
-implementation 'io.github.igrqb:jnr-graphviz:0.5'
+implementation 'io.github.igrqb:jnr-graphviz:0.5.1'
 ```
 
 For more dependency systems: https://mvnrepository.com/artifact/io.github.igrqb/jnr-graphviz/
@@ -38,4 +38,13 @@ String svg = Graphviz.dotToSvg(dot);
 
 // or directly to file
 File svgFile = Graphviz.dotToSvg(dot, "/path/to/file.svg");
+
+// Other export formats
+OutputFormat format = OutputFormat.BMP;
+// OutputFormat.JPG
+// OutputFormat.PDF
+// OutputFormat.PNG
+// OutputFormat.SVG
+// See OutputFormat.java for more
+byte[] output = Graphviz.export(dot, format);
 ```
