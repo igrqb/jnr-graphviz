@@ -2,8 +2,8 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'signing'
-    id("org.jreleaser") version "1.22.0"
-    id "com.github.ben-manes.versions" version '0.53.0'
+    id("org.jreleaser") version "1.24.0"
+    id "com.github.ben-manes.versions" version '0.54.0'
 }
 
 group = 'io.github.igrqb'
@@ -14,19 +14,19 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.jnr:jnr-ffi:2.2.18'
+    implementation 'com.github.jnr:jnr-ffi:2.2.19'
     implementation 'org.slf4j:slf4j-api:2.0.17'
     implementation 'ch.qos.logback:logback-classic:1.5.32'
 
     testImplementation(platform('org.junit:junit-bom:6.0.3'))
     testImplementation 'org.junit.jupiter:junit-jupiter:6.0.3'
     testImplementation 'org.junit.platform:junit-platform-suite-engine:6.0.3'
-    testImplementation 'commons-io:commons-io:2.21.0'
-    testImplementation 'com.twelvemonkeys.imageio:imageio-batik:3.13.0'
-    testImplementation 'org.apache.pdfbox:pdfbox:3.0.6'
+    testImplementation 'commons-io:commons-io:2.22.0'
+    testImplementation 'com.twelvemonkeys.imageio:imageio-batik:3.13.1'
+    testImplementation 'org.apache.pdfbox:pdfbox:3.0.7'
     testImplementation 'org.apache.xmlgraphics:batik-transcoder:1.19'
-    testImplementation 'org.bytedeco:javacv-platform:1.5.12'
-    testImplementation 'org.bytedeco:opencv-platform:4.11.0-1.5.12'
+    testImplementation 'org.bytedeco:javacv-platform:1.5.13'
+    testImplementation 'org.bytedeco:opencv-platform:4.13.0-1.5.13'
 }
 
 def isNonStable = { String version ->
