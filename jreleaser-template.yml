@@ -1,0 +1,64 @@
+# Copy this file to jreleaser.yml and replace every <placeholder>.
+# jreleaser.yml is gitignored because it holds the signing key and portal token.
+#
+#   cp jreleaser-template.yml jreleaser.yml
+#
+# Keep project.version equal to version in build.gradle.
+#
+# Armored keys (the blank line under each BEGIN line is required):
+#
+#   gpg --armor --export you@example.com
+#   gpg --armor --export-secret-keys you@example.com
+#
+# Paste each block under its field, aligned with the placeholder lines.
+# On JReleaser 1.26 the deployer only sees the public key when
+# signing.pgp.publicKey is set in this file. That property is deprecated
+# and will be removed in JReleaser 2.0. JRELEASER_GPG_PUBLIC_KEY is not applied.
+# The secret key and passphrase may be omitted here when
+# JRELEASER_GPG_SECRET_KEY and JRELEASER_GPG_PASSPHRASE are set.
+#
+# Portal username and password come from a user token:
+# https://central.sonatype.com/usertoken
+# Leave them commented out to use JRELEASER_MAVENCENTRAL_USERNAME and
+# JRELEASER_MAVENCENTRAL_PASSWORD instead.
+
+project:
+  name: jnr-graphviz
+  version: 0.5.2
+  description: Java bindings for simple Graphviz commands using JNR
+  links:
+    homepage: https://github.com/igrqb/jnr-graphviz
+  languages:
+    java:
+      groupId: io.github.igrqb
+      artifactId: jnr-graphviz
+
+signing:
+  pgp:
+    active: ALWAYS
+    armored: true
+    mode: MEMORY
+    passphrase: <pgp passphrase>
+    publicKey: |
+      -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+      <armored public key>
+
+      -----END PGP PUBLIC KEY BLOCK-----
+    secretKey: |
+      -----BEGIN PGP PRIVATE KEY BLOCK-----
+
+      <armored secret key>
+
+      -----END PGP PRIVATE KEY BLOCK-----
+
+deploy:
+  maven:
+    mavenCentral:
+      sonatype:
+        active: ALWAYS
+        url: https://central.sonatype.com/api/v1/publisher
+        stagingRepositories:
+          - build/staging-deploy
+        # username: <publisher portal username>
+        # password: <publisher portal user token>

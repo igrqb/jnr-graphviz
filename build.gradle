@@ -3,7 +3,6 @@ plugins {
     id 'maven-publish'
     id 'signing'
     id 'project-report'
-    id("org.jreleaser") version "1.26.0"
     id "io.github.ben-manes.versions" version '0.64.0'
 }
 
@@ -78,7 +77,6 @@ publishing {
             pom {
                 name = 'jnr-graphviz'
                 packaging = 'jar'
-                // optionally artifactId can be defined here
                 description = 'Java bindings for simple Graphviz commands using JNR'
                 url = 'https://github.com/igrqb/jnr-graphviz'
 
@@ -113,34 +111,4 @@ publishing {
 signing {
     useGpgCmd()
     sign publishing.publications.mavenJava
-}
-
-jreleaser {
-    // minimal config needed for Maven Central only
-    project {
-        // usually autodetected from gradle
-    }
-
-    deploy {
-        maven {
-            mavenCentral {
-                sonatype {
-                    active = 'ALWAYS'
-                    url = 'https://central.sonatype.com/api/v1/publisher'
-                    stagingRepository('build/staging-deploy')
-                    // autoRelease = true
-                    // closeDelay = 'PT5M'
-                }
-            }
-        }
-    }
-
-    signing {
-        pgp {
-            active          = 'ALWAYS'
-            publicKey       = '{{env.PGP_PUBLIC_KEY}}'
-            secretKey       = '{{env.PGP_SECRET_KEY}}'
-            passphrase      = '{{env.PGP_PASSPHRASE}}'
-        }
-    }
 }
