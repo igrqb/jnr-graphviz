@@ -15,14 +15,14 @@ Expects Graphviz to be installed on the target system, e.g.:
 <dependency>
   <groupId>io.github.igrqb</groupId>
   <artifactId>jnr-graphviz</artifactId>
-  <version>0.5.1</version>
+  <version>0.5.2</version>
 </dependency>
 ```
 
 #### Gradle
 
 ```groovy
-implementation 'io.github.igrqb:jnr-graphviz:0.5.1'
+implementation 'io.github.igrqb:jnr-graphviz:0.5.2'
 ```
 
 For more dependency systems: https://mvnrepository.com/artifact/io.github.igrqb/jnr-graphviz/
