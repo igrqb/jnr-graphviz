@@ -1,0 +1,5 @@
+digraph G {
+  label="simple";
+  a -> b;
+  b -> c;
+}

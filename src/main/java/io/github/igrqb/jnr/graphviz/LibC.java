@@ -2,7 +2,7 @@ package io.github.igrqb.jnr.graphviz;
 
 import jnr.ffi.Pointer;
 import jnr.ffi.Variable;
-import jnr.ffi.types.int64_t;
+import jnr.ffi.types.size_t;
 
 /**
  * JNR interface to libc that exposes a subset of required functions to work with I/O streams.
@@ -10,22 +10,23 @@ import jnr.ffi.types.int64_t;
 public interface LibC {
 
   /**
-   * JNR handle to stderr
-   * @return stderr
+   * Address of the {@code FILE} for stderr.
+   * jnr 2.3 cannot generate a {@code Variable} of {@code Pointer}, so this is the raw address.
+   * @return the stderr stream address
    */
-  @int64_t Variable<Long> stderr();
+  Variable<Long> stderr();
 
   /**
-   * JNR handle to stdout
-   * @return stdout
+   * Address of the {@code FILE} for stdout.
+   * @return the stdout stream address
    */
-  @int64_t Variable<Long> stdout();
+  Variable<Long> stdout();
 
   /**
-   * JNR handle to stdin
-   * @return stdin
+   * Address of the {@code FILE} for stdin.
+   * @return the stdin stream address
    */
-  @int64_t Variable<Long> stdin();
+  Variable<Long> stdin();
 
   /**
    * Open an in-memory stream
@@ -64,4 +65,43 @@ public interface LibC {
    * @param ptr pointer
    */
   void free(Pointer ptr);
+
+  /**
+   * Open a memory buffer as a FILE.
+   * @param buf buffer
+   * @param size number of bytes in the buffer
+   * @param mode file access mode, for example {@code "r"}
+   * @return the stream, or NULL
+   * @see <a href="https://www.man7.org/linux/man-pages/man3/fmemopen.3.html">fmemopen(3)</a>
+   */
+  Pointer fmemopen(Pointer buf, @size_t long size, String mode);
+
+  /**
+   * File descriptor of a stream.
+   * @param stream FILE*
+   * @return the descriptor, or -1
+   */
+  int fileno(Pointer stream);
+
+  /**
+   * Duplicate a file descriptor.
+   * @param fd descriptor
+   * @return the new descriptor, or -1
+   */
+  int dup(int fd);
+
+  /**
+   * Make {@code newfd} a duplicate of {@code oldfd}.
+   * @param oldfd source descriptor
+   * @param newfd target descriptor
+   * @return {@code newfd}, or -1
+   */
+  int dup2(int oldfd, int newfd);
+
+  /**
+   * Close a file descriptor.
+   * @param fd descriptor
+   * @return 0 on success, -1 on error
+   */
+  int close(int fd);
 }
