@@ -24,7 +24,7 @@
 
 project:
   name: jnr-graphviz
-  version: 0.5.2
+  version: 0.6.0-SNAPSHOT
   description: Java bindings for simple Graphviz commands using JNR
   links:
     homepage: https://github.com/igrqb/jnr-graphviz
@@ -56,8 +56,26 @@ deploy:
   maven:
     mavenCentral:
       sonatype:
-        active: ALWAYS
+        active: RELEASE
         url: https://central.sonatype.com/api/v1/publisher
+        stagingRepositories:
+          - build/staging-deploy
+        # username: <publisher portal username>
+        # password: <publisher portal user token>
+    # Snapshots are rejected by the publisher API. This deployer runs only for -SNAPSHOT versions.
+    nexus2:
+      snapshots:
+        active: SNAPSHOT
+        snapshotUrl: https://central.sonatype.com/repository/maven-snapshots/
+        applyMavenCentralRules: true
+        # Central returns 403 when a checksum is uploaded before its artifact, and it rejects .sha256.
+        # Gradle already writes .md5 and .sha1. JReleaser must not add more.
+        checksums: false
+        # Gradle already wrote detached signatures. JReleaser re-sign stores a PGP MESSAGE instead.
+        sign: false
+        snapshotSupported: true
+        closeRepository: true
+        releaseRepository: true
         stagingRepositories:
           - build/staging-deploy
         # username: <publisher portal username>

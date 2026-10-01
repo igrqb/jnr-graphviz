@@ -25,6 +25,30 @@ Expects Graphviz to be installed on the target system, e.g.:
 implementation 'io.github.igrqb:jnr-graphviz:0.5.2'
 ```
 
+`0.5.2` is the release on Maven Central. `0.6.0-SNAPSHOT` is on the Central Portal snapshot repository. Add that repository and depend on the snapshot:
+
+```xml
+<repository>
+  <id>central-portal-snapshots</id>
+  <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+  <releases><enabled>false</enabled></releases>
+  <snapshots><enabled>true</enabled></snapshots>
+</repository>
+```
+
+```groovy
+repositories {
+  maven {
+    url = 'https://central.sonatype.com/repository/maven-snapshots/'
+    mavenContent { snapshotsOnly() }
+  }
+}
+
+dependencies {
+  implementation 'io.github.igrqb:jnr-graphviz:0.6.0-SNAPSHOT'
+}
+```
+
 For more dependency systems: https://mvnrepository.com/artifact/io.github.igrqb/jnr-graphviz/
 
 
@@ -155,9 +179,11 @@ Publishing uses the [JReleaser](https://jreleaser.org) CLI, version 1.26. Instal
 sdk install jreleaser 1.26.0
 ```
 
-Copy `jreleaser-template.yml` to `jreleaser.yml` and fill in the placeholders described in that file. `jreleaser.yml` is gitignored.
+Copy `jreleaser-template.yml` to `jreleaser.yml` and fill in the placeholders described in that file. `jreleaser.yml` is gitignored because it holds the signing key and the portal token. Do not commit it. Keep `version` in `build.gradle` and `project.version` in `jreleaser.yml` the same. When the version changes, edit `project.version` in the existing `jreleaser.yml`. Do not replace that file with the template.
 
-From the repository root, stage the artifacts and check the deploy before uploading:
+`./gradlew clean publish` writes the jar, sources jar, javadoc jar, Gradle module, and POM into `build/staging-deploy`, and signs them with the local GnuPG key. It also writes `.md5`, `.sha1`, `.sha256`, and `.sha512` sidecars.
+
+A version that does not end in `-SNAPSHOT` uses `mavenCentral.sonatype` (`active: RELEASE`). `jreleaser deploy` uploads the staged directory to the Central Publisher Portal and waits until the deployment reaches `PUBLISHED`. Progress is at https://central.sonatype.com/publishing/deployments.
 
 ```bash
 ./gradlew clean publish
@@ -165,13 +191,23 @@ jreleaser deploy --dry-run
 jreleaser deploy
 ```
 
-`publish` writes the jar, sources jar, javadoc jar, and POM into `build/staging-deploy`, and signs them with the local GnuPG key. `jreleaser deploy` uploads that directory to the Central Publisher Portal and publishes it. The command waits until the deployment reaches `PUBLISHED`. Progress is at https://central.sonatype.com/publishing/deployments.
-
-To upload without publishing, then publish after checking the portal:
+To upload a release without publishing, then publish after checking the portal:
 
 ```bash
 JRELEASER_MAVENCENTRAL_STAGE=UPLOAD jreleaser deploy
 JRELEASER_MAVENCENTRAL_STAGE=PUBLISH jreleaser deploy
 ```
 
-Set `JRELEASER_MAVENCENTRAL_SONATYPE_DEPLOYMENT_ID` to the deployment id written to `out/jreleaser/output.properties` by the upload. Maven Central rejects a repeated version, so bump `version` in `build.gradle` and `project.version` in `jreleaser.yml` together before another release.
+Set `JRELEASER_MAVENCENTRAL_SONATYPE_DEPLOYMENT_ID` to the deployment id written to `out/jreleaser/output.properties` by the upload. Maven Central rejects a repeated release version.
+
+A `-SNAPSHOT` version skips the publisher API. The portal rejects snapshots. `nexus2.snapshots` (`active: SNAPSHOT`) uploads to https://central.sonatype.com/repository/maven-snapshots/. Enable snapshots for `io.github.igrqb` in the [namespace settings](https://central.sonatype.com/publishing/namespaces) before the first snapshot. That deployer uses the same portal username and password as the release deployer.
+
+The snapshot repository rejects `.sha256`. It returns 403 when a checksum is uploaded before the file it describes. JReleaser walks the staging directory in hash order and stops at the first 403. Delete the checksum sidecars so the deploy uploads the artifacts and the Gradle signatures. `checksums: false` keeps JReleaser from creating new checksums. `sign: false` keeps it from replacing those detached signatures with a PGP message.
+
+```bash
+./gradlew clean publish
+find build/staging-deploy -type f \( -name '*.md5' -o -name '*.sha1' -o -name '*.sha256' -o -name '*.sha512' \) -delete
+jreleaser deploy
+```
+
+Maven resolves `0.6.0-SNAPSHOT` through `maven-metadata.xml`. If deploy stops on that file, run `clean publish` again, delete the checksum sidecars and both `maven-metadata.xml` files, and deploy. Upload the metadata and the `.md5` and `.sha1` files only after the artifacts for that timestamp exist. Each `clean publish` assigns a new timestamp. Do not retry a timestamp that already received a partial upload. `0.6.0-SNAPSHOT` is published as build `20261001.063604`.
