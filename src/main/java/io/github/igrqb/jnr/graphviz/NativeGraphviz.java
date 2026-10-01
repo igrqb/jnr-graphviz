@@ -71,6 +71,7 @@ public final class NativeGraphviz {
   public static final class Args {
     public final int argc;
     public final Pointer argv;
+    /** Retains the C strings. {@code argv} stores only their addresses. */
     private final Pointer[] storage;
 
     private Args(int argc, Pointer argv, Pointer[] storage) {
@@ -91,7 +92,7 @@ public final class NativeGraphviz {
     length.putLong(0, 0);
     int status = gvc.gvRenderData(context, graph, format, result, length);
     if (status != 0) {
-      throw new IllegalStateException("gvRenderData returned " + status + " " + String.valueOf(cgraph.aglasterr()));
+      throw new IllegalStateException("gvRenderData returned " + status + " " + cgraph.aglasterr());
     }
     int size = length.getInt(0);
     Pointer data = result.getPointer(0);

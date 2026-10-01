@@ -65,6 +65,7 @@ public final class ApiOracle {
     cgraph.agseterr(Agerrlevel.WARN);
     cgraph.agreseterrors();
     Transcript t = new Transcript();
+    // Native buffers and callbacks have to stay reachable until the transcript returns.
     List<Object> pins = new ArrayList<>();
     try {
       t.printf("Agdirected %d\n", Agdesc.directed());
@@ -332,8 +333,9 @@ public final class ApiOracle {
       String outPath = "/tmp/jnr-graphviz-oracle.plain";
       int fileRc = gvc.gvRenderFilename(context, layoutGraph, "plain", outPath);
       t.printf("renderFilename %d\n", fileRc);
-      t.write(Files.readAllBytes(Path.of(outPath)));
-      Files.deleteIfExists(Path.of(outPath));
+      Path plainFile = Path.of(outPath);
+      t.write(Files.readAllBytes(plainFile));
+      Files.deleteIfExists(plainFile);
       t.print("ENDFILE\n");
 
       t.printf("freeLayout %d\n", gvc.gvFreeLayout(context, layoutGraph));

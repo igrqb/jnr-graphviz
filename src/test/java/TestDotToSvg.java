@@ -2,8 +2,6 @@ import io.github.igrqb.jnr.graphviz.Graphviz;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -14,8 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class TestDotToSvg {
-  private static final Logger log = LoggerFactory.getLogger(TestDotToSvg.class);
-
   @Test
   public void testSimpleDotToSvg() throws IOException {
     String dot = "digraph { a -> b; b -> c }";

@@ -28,9 +28,6 @@ public final class Agsym {
       return null;
     }
     Pointer value = sym.getPointer(offset);
-    if (value == null || value.address() == 0) {
-      return null;
-    }
-    return value.getString(0);
+    return NativeGraphviz.readString(value);
   }
 }
